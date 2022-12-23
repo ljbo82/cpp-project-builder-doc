@@ -16,6 +16,24 @@ Following are described all variables used/exported by this makefile:
 > * **Allowed origins:** defines where variable is allowed to be defined (command line, environment, makefile, etc).
 > * **Restrictions:** Contain information about restrictions on which kind of values that can be stored in the variable.
 
+<a name="GIT_COMMIT"></a>
+* **`GIT_COMMIT`**
+
+  * **Description:** Contains current commit for the repository. If directory is not versioned by git, variable will be undefined
+  * **Mandatory:** _(N/A)_
+  * **Default value:** _(N/A)_
+  * **Allowed origins:** _(N/A)_
+  * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
+
+<a name="GIT_COMMIT_SHORT"></a>
+* **`GIT_COMMIT_SHORT`**
+
+  * **Description:** Contains current short commit for the repository. If directory is not versioned by git, variable will be undefined
+  * **Mandatory:** _(N/A)_
+  * **Default value:** _(N/A)_
+  * **Allowed origins:** _(N/A)_
+  * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
+
 <a name="GIT_REPO_DIR"></a>
 * **`GIT_REPO_DIR`**
 
@@ -40,28 +58,19 @@ Following are described all variables used/exported by this makefile:
   * **Allowed origins:** _(N/A)_
   * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
 
-<a name="GIT_COMMIT"></a>
-* **`GIT_COMMIT`**
-
-  * **Description:** Contains current commit for the repository. If directory is not versioned by git, variable will be undefined
-  * **Mandatory:** _(N/A)_
-  * **Default value:** _(N/A)_
-  * **Allowed origins:** _(N/A)_
-  * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
-
-<a name="GIT_COMMIT_SHORT"></a>
-* **`GIT_COMMIT_SHORT`**
-
-  * **Description:** Contains current short commit for the repository. If directory is not versioned by git, variable will be undefined
-  * **Mandatory:** _(N/A)_
-  * **Default value:** _(N/A)_
-  * **Allowed origins:** _(N/A)_
-  * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
-
 <a name="GIT_TAG"></a>
 * **`GIT_TAG`**
 
   * **Description:** Contains current tag for the repository. If directory is not versioned by git, variable will be undefined
+  * **Mandatory:** _(N/A)_
+  * **Default value:** _(N/A)_
+  * **Allowed origins:** _(N/A)_
+  * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
+
+  <a name="GIT_VERSION"></a>
+* **`GIT_TAG`**
+
+  * **Description:** Contains a candidate version for the project using current repositorycommit/tag. If directory is not versioned by git, variable value will be `0.1.0-unknown`.
   * **Mandatory:** _(N/A)_
   * **Default value:** _(N/A)_
   * **Allowed origins:** _(N/A)_

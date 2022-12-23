@@ -1,6 +1,6 @@
-# cpp-project-builder/doc
+# cpp-project-builder documentation
 
-This directory contains the documentation for each makefile provided by the build system:
+This directory contains the documentation for each makefile provided by [cpp-project-builder-core](https://github.com/ljbo82/cpp-project-builder-core) build system.
 
 > **Assumptions**
 >
