@@ -89,15 +89,15 @@ make O=/output/directory
 >
 > The output base directory shall be ignored by your source code version control system if it is located inside your source tree.
 
-Inside output base directory ([`$(O)`](#O)) you may find directories (some of them exists only for certain [types of projects](#PROJ_TYPE)) grouped by target host platform ([`$(HOST)`](#HOST)) and build mode ([debug or release](#DEBUG)):
+Inside output base directory ([`$(O)`](#O)) you will find the following directories (some of them exists only for certain [types of projects](#PROJ_TYPE)):
 
-* **`$(O)/$(HOST)/<debug-or-release>/build/`**
+* **`$(O)/build/`**
 
   Build directory. This directory contains object files as well as final artifact (application executable or library).
 
   This path can be obtained through [`O_BUILD_DIR`](#O_BUILD_DIR) read-only variable and customized through [`BUILD_SUBDIR`](#BUILD_SUBDIR) variable.
 
-* **`$(O)/$(HOST)/<debug-or-release>/dist/`**
+* **`$(O)/dist/`**
 
   Distribution directory. Final artifact (executable or library), and possibly companion files (e.g. header files, for libraries) are placed into this directory.
 
@@ -107,15 +107,15 @@ Inside output base directory ([`$(O)`](#O)) you may find directories (some of th
   >
   > Additional directories and/or files to be distributed along with resulting distribution can be added through usage of [`DIST_DIRS`](#DIST_DIRS) and [`DIST_FILES`](#DIST_FILES) variables.
 
-  * **`$(O)/$(HOST)/<debug-or-release>/dist/bin/`**
+  * **`$(O)/dist/bin/`**
 
     If project is an [application executable](#PROJ_TYPE), resulting distribution binary will be placed into this directory.
 
-  * **`$(O)/$(HOST)/<debug-or-release>/dist/lib/`**
+  * **`$(O)/dist/lib/`**
 
     If project is a [library](#PROJ_TYPE) (either [static or shared](#LIB_TYPE)), resulting binary will be placed into this directory.
 
-  * **`$(O)/$(HOST)/<debug-or-release>/dist/include/`**
+  * **`$(O)/dist/include/`**
 
     If project builds a [library](#PROJ_TYPE) (either [static or shared](#LIB_TYPE)), public headers (if any) will be placed into this directory.
 
@@ -157,6 +157,17 @@ And the following layers will be applied:
 * `linux-x64` (applied on top of `linux` layer)
 
 > Note that `linux-arm` and `linux-arm-v7` layers will be skipped when building the for this host, since they are not compatible layers.
+
+> **Output directory**
+>
+> When building a project for multiple platforms in the same build machine, it is recommended to define distinct output directories for each supported host.
+>
+> For exmple, if your project will be built for linux-x64 and windows-x64 in the same build machine, define disctinct output directories for each platform:
+>
+> ```sh
+> $ make HOST=linux-x64 O=output/linux-x64
+> $ make HOST=windows-x64 O=output/windows-x64
+> ```
 
 ### Layer directories and files
 
@@ -203,12 +214,10 @@ graph TD;
     classDef buildClass stroke:#416b70, fill:#8be6f0;
     build[<b>build</b>]:::buildClass;
     postBuildDeps["$(POST_BUILD_DEPS)"]:::buildClass;
-    artifactDeps["$(ARTIFACT_DEPS)"]:::buildClass;
     intBuild[<i>Internal execution</i>]:::buildClass;
     preBuildDeps["$(PRE_BUILD_DEPS)"]:::buildClass;
-    build-->postBuildDeps-.->intBuild-->artifactDeps-.->preBuildDeps;
+    build-->postBuildDeps-.->intBuild-->preBuildDeps;
     build-->intBuild;
-    intBuild-->preBuildDeps;
 
     classDef distClass stroke:#548033, fill:#96e35b;
     dist[<b>dist</b>]:::distClass;
@@ -251,8 +260,6 @@ graph TD;
   >
   > * If project does not contain source files, no binary artifact will be generated (Howerver, targets declared in [PRE_BUILD_DEPS](#PRE_BUILD_DEPS) and [`POST_BUILD_DEPS`](#POST_BUILD_DEPS) will be executed)
   >
-  > * Additional dependency targets for the binary artifact may be added through the [ARTIFACT_DEPS](#ARTIFACT_DEPS) variable.
-
 <a name="dist"></a>
 * **`dist`**
 
@@ -273,11 +280,63 @@ graph TD;
   $ make print-vars VARS='SRC_DIRS SRC_FILES'
   ```
 
-  Generates the following output (for [c-app demo](../demo/c-app)):
+  Generates the following kind of output:
 
   ```
   SRC_DIRS = src
+  SRC_FILES = src/main.c src/file1.c src/file2.c
+  ```
+
+  If `VARS` is undefined, a bunch of variable's values will be displayed.
+
+  ```sh
+  $ make print-vars
+  ```
+
+  Output example:
+
+  ```
+  AR = ar
+  ARTIFACT = hello0
+  AS = as
+  ASFLAGS = -MMD -MP -Isrc -Ioutput/libs/dist/include
+  CC = gcc
+  CFLAGS = -MMD -MP -Isrc -Ioutput/libs/dist/include -Wall -O2 -s -DUSE_SHARED_LIB
+  CROSS_COMPILE =
+  CXX = g++
+  CXXFLAGS = -MMD -MP -Isrc -Ioutput/libs/dist/include -Wall -O2 -s
+  DEBUG = 0
+  DIST_DIRS =
+  DIST_FILES =
+  DIST_MARKER =
+  HOST = linux-x64
+  HOSTS_DIRS = /home/user/Desktop/app/make/hosts
+  INCLUDE_DIRS = src output/libs/dist/include
+  LD = gcc
+  LDFLAGS = -s -Loutput/libs/dist/lib -lmylib0
+  LIB_TYPE = shared
+  O = output
+  OPTIMIZE_RELEASE = 1
+  O_BUILD_DIR = output/build
+  O_DIST_DIR = output/dist
+  POST_BUILD_DEPS =
+  POST_CLEAN_DEPS =
+  POST_DIST_DEPS =
+  PRE_BUILD_DEPS = --mylib output/libs/mylib.marker
+  PRE_CLEAN_DEPS =
+  PRE_DIST_DEPS =
+  PROJ_NAME = hello
+  PROJ_TYPE = app
+  PROJ_VERSION = 0.1.0
+  RELEASE_OPTIMIZATION_LEVEL = 2
+  SKIPPED_SRC_DIRS =
+  SKIPPED_SRC_FILES =
+  SKIP_DEFAULT_INCLUDE_DIR = 0
+  SKIP_DEFAULT_SRC_DIR = 0
+  SRC_DIRS = src
   SRC_FILES = src/main.c
+  STRIP_RELEASE = 1
+  V = 0
   ```
 
 ## Variables
@@ -313,6 +372,15 @@ Here are listed variables that can be perfectly defined inside a makefile, altho
   * **Ready for layers:** yes
   * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
   * **Restrictions:** Accepted values are **`1`** (enable debug mode) or **`0`** (disables debug mode / enables release mode).
+
+<a name="DIST_MARKER"></a>
+* **`DIST_MARKER`**
+  * **Description:** Creates a marker file (empty file) which will touched every time the any of the the [distribution files](#dist) were changed. This is useful to create dependencies on sub-make.
+  * **Mandatory:** no
+  * **Default value:**:  _(empty)_
+  * **Ready for layers:** yes
+  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
+  * **Restrictions:** Value shall not have neither `..` nor whitespaces.
 
 <a name="HOST"></a>
 * **`HOST`**
@@ -456,28 +524,6 @@ The following variables must be defined exclusively inside a makefile (either `$
   * **Restrictions:**
     * Since this variable will hold makefile sections and can contains multiple lines, set/append value to this variable using [`define`](#https://www.gnu.org/software/make/manual/make.html#Multi_002dLine).
     * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
-
-<a name="LIB_PROJECTS"></a>
-* **`LIB_PROJECTS`**
-  * **Description:** If your project depends on libraries that shall be be built along with your project, `LIB_PROJECTS` shall contains a list of library projects that shall be built as a dependency for your project's artifact.
-    * Each entry in the list must have the format `lib_project_directory[:lib_dir_alias]`.
-    * Each referred project shall must be using gcc-project-builder in order to build it (using `make` command)
-    * Referred library header dir will be added to include path
-    * For an example of real usage, see [app-lib demo makefile](../demo/app-lib/Makefile)
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** makefile
-  * **Restrictions:** Since variable is intended to hold a list of values (whitespace-delimited string), it is recommend to use the `+=` operator while adding values to the variable.
-
-  <a name="LIBS"></a>
-* **`LIBS`**
-  * **Description:** Contains a list of libraries (cannonical names) the project must link against. Although libraries can be added using [LDFLAGS](#LDFLAGS), prefer using `LIBS` variable because it make easier the management of linker flags order.
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** makefile
-  * **Restrictions:** Since variable is intended to hold a list of values (whitespace-delimited string), it is recommend to use the `+=` operator while adding values to the variable.
 
 <a name="POST_BUILD_DEPS"></a>
 * **`POST_BUILD_DEPS`**
@@ -738,19 +784,9 @@ The following variables shall be changed as a feature of last resort, since they
   * **Restrictions:** Value shall not contain whitespaces nor can be an empty string.
     * Note that default value depends on many variables. It is not recommended to change the artifact name unless you have a really good reason to do so.
 
-<a name="ARTIFACT_DEPS"></a>
-* **`ARTIFACT_DEPS`**
-  * **Description:** Contains a list of targets that must be executed BEFORE [`ARTIFACT`](#ARTIFACT) is built (see [`build`](#build) target).
-    * See [make targets](#make-targets)
-  * **Mandatory:** no
-  * **Default value:**  _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** makefile
-  * **Restrictions:** Since variable is intended to hold a list of values (whitespace-delimited string), it is recommend to use the `+=` operator while adding values to the variable.
-
 <a name="BUILD_SUBDIR"></a>
 * **`BUILD_SUBDIR`**
-  * **Description:** Sets the path of a subdirectory inside [build directory](#output-directories) (relative to `$(O)/$(HOST)`).
+  * **Description:** Sets the path of a subdirectory inside [build directory](#output-directories) (`$(O)/build`).
     * Changing this value is useful to isolate object files when building dependencies (e.g. libraries) prior to project build.
   * **Mandatory:** no
   * **Default value:**  _(undefined)_
@@ -760,7 +796,7 @@ The following variables shall be changed as a feature of last resort, since they
 
   <a name="DIST_SUBDIR"></a>
 * **`DIST_SUBDIR`**
-  * **Description:** Sets the path of a subdirectory inside [distribution directory](#output-directories) (relative to `$(O)/$(HOST)`).
+  * **Description:** Sets the path of a subdirectory inside [distribution directory](#output-directories) (`$(O)/dist`).
   * **Mandatory:** no
   * **Default value:**  _(undefined)_
   * **Ready for layers:** yes

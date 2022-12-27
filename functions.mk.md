@@ -108,3 +108,20 @@ Following are listed exposed functions:
   * `findFlags`
 
     Flags to be passed to [find(1)](https://linux.die.net/man/1/find).
+
+
+* **`$(call FN_REL_DIR,srcDir,destDir)`**
+
+  Returns the relative path between source and destination directories.
+
+  This function is useful when defining the output directory of a library being build as a dependency for another project.
+
+  **Parameters:**
+
+  * `srcDir`
+
+    Source directory.
+
+  * `destDir`
+
+    Destination directory.
