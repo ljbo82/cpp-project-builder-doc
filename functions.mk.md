@@ -109,6 +109,19 @@ Following are listed exposed functions:
 
     Flags to be passed to [find(1)](https://linux.die.net/man/1/find).
 
+* **`$(call FN_IS_INSIDE_DIR,dir,path)`**
+
+  Checks if a path is inside a directory (on success, returns the path, otherwise returns an empty value).
+
+  **Parameters:**
+
+  * `dir`
+
+    Directory where given path must be contained.
+
+  * `path`
+
+    Tested path.
 
 * **`$(call FN_REL_DIR,srcDir,destDir)`**
 

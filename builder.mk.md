@@ -380,7 +380,9 @@ Here are listed variables that can be perfectly defined inside a makefile, altho
   * **Default value:**:  _(empty)_
   * **Ready for layers:** yes
   * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-  * **Restrictions:** Value shall not have neither `..` nor whitespaces.
+  * **Restrictions:**
+      * Value shall not have whitespaces
+      * Since this file will be placed in [`$(O)`](#O) directory, passing relative paths resulting in a directory other than [`$(O)`](#O) is not allowed (an error will be raised by the build system)
 
 <a name="HOST"></a>
 * **`HOST`**
@@ -622,9 +624,11 @@ The following variables must be defined exclusively inside a makefile (either `$
   * **Ready for layers:** no
   * **Allowed origins:** makefile
   * **Restrictions:**
-    * This variable will be modified by build system in order to include detected default directories.
-    * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
-    * A list is composed by values delimited by whitespaces (this is a GNU make restriction). For this reason, paths containing spaces are not supported.
+    * This variable will be modified by build system in order to include detected default directories
+    * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly
+    * A list is composed by values delimited by whitespaces (this is a GNU make restriction). For this reason, paths containing spaces are not supported
+    * Directories must be located inside [`$(CURDIR)`](https://www.gnu.org/software/make/manual/make.html#index-CURDIR) (if this condition is not met, an error will be raised by the build system)
+
 
 <a name="SRC_FILES"></a>
 * **`SRC_FILES`**
@@ -792,7 +796,9 @@ The following variables shall be changed as a feature of last resort, since they
   * **Default value:**  _(undefined)_
   * **Ready for layers:** yes
   * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-  * **Restrictions:** Value shall not contain whitespaces.
+  * **Restrictions:**
+    * Value shall not contain whitespaces
+    * Since this directory will be created inside [`$(O)`/build](#output-directories) directory, passing relative paths resulting in a directory other than [`$(O)`/build](#output-directories) is not allowed (an error will be raised by the build system)
 
   <a name="DIST_SUBDIR"></a>
 * **`DIST_SUBDIR`**
@@ -801,7 +807,9 @@ The following variables shall be changed as a feature of last resort, since they
   * **Default value:**  _(undefined)_
   * **Ready for layers:** yes
   * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-  * **Restrictions:** Value shall not contain whitespaces.
+  * **Restrictions:**
+    * Value shall not contain whitespaces
+    * Since this directory will be created inside [`$(O)`/build](#output-directories) directory, passing relative paths resulting in a directory other than [`$(O)`/build](#output-directories) is not allowed (an error will be raised by the build system)
 
 <a name="HOSTS_DIRS"></a>
 * **`HOSTS_DIRS`**
