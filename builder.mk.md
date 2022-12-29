@@ -811,6 +811,15 @@ The following variables shall be changed as a feature of last resort, since they
     * Value shall not contain whitespaces
     * Since this directory will be created inside [`$(O)`/build](#output-directories) directory, passing relative paths resulting in a directory other than [`$(O)`/build](#output-directories) is not allowed (an error will be raised by the build system)
 
+<a name="EXTRA_HOSTS_DIRS"></a>
+* **`EXTRA_HOSTS_DIRS`**
+  * **Description:** Extra hosts directories. This is usefull to add platforms layers from command-line.
+  * **Mandatory:** no
+  * **Default value:** _(undefined)_
+  * **Ready for layers:** yes
+  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
+  * **Restrictions:** Since value is a list of paths, paths shall not contain whitespaces.
+
 <a name="HOSTS_DIRS"></a>
 * **`HOSTS_DIRS`**
   * **Description:** Defines a list of [base directories for layers](#layer-directories-and-files).
