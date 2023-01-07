@@ -46,3 +46,7 @@ Following are described all variables used/exported by this makefile:
   * **Default value:** _(N/A)_
   * **Allowed origins:** _(N/A)_
   * **Restrictions:** This is a read-only variable. Its value is set by this makefile and cannot be modified.
+
+  > **HOST definition**
+  >
+  > If variable [`HOST`](builder.mk.md#HOST) is not defined, the value of `NATIVE_HOST` will be used.

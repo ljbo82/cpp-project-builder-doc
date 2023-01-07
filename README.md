@@ -16,6 +16,10 @@ This is the main makefile. Include it at the end of your `$(PROJ_ROOT)/Makefile`
 
 See [builder.mk.md](builder.mk.md) for details.
 
+### common.mk
+
+Common definitions for the build system. It is included by [project.mk](#projectmk).
+
 ### doxygen.mk
 
 This file provides standard targets to generate source documentation using [doxygen](https://www.doxygen.nl/index.html).
@@ -36,13 +40,13 @@ This file inspects `$(PROJ_ROOT)` directory and exposes git repository informati
 
 See [git.mk.md](git.mk.md) for details.
 
-### native-host.mk
+### host.mk
 
-This file inspects current execution environment and identifies the native host. Identified info is exposed through read-only variables.
+This file inspects current execution environment and identifies the target host if it was not defined.
 
-> NOTE: This file is automatically included by `$(CPP_PROJECT_BUILDER)/builder.mk`
+> NOTE: This file is automatically included by `$(CPP_PROJECT_BUILDER)/project.mk`
 
-See [native-host.mk.md](native-host.mk.md) for details.
+See [host.mk.md](host.mk.md) for details.
 
 ### project.mk
 
