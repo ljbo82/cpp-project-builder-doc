@@ -123,12 +123,14 @@ Inside output base directory ([`$(O)`](#O)) you will find the following director
 
 The build system was created with the concept of platform layers in mind, which means that platform customizations can be made by adding a specifc layer on top of a generic one.
 
+A layer is a directory containing makefile definitions and/or specific source files.
+
 In order to clarify the concepts, lets assume an example project which will be supporting the following hosts: `linux-x64`, and `linux-arm-v7`. For this example project, the following layers can be added (note that layer arrangement is up to the developer):
 
 * `linux`
-* `linux-x64` (applied on top of `linux` layer)
-* `linux-arm` (applied on top of `linux` layer)
-* `linux-arm-v7` (applied on top of `linux-arm-v7` layer)
+* `linux/x64` (applied on top of `linux` layer)
+* `linux/arm` (applied on top of `linux` layer)
+* `linux/arm/v7` (applied on top of `linux/arm` layer)
 
 > NOTE: layer components must be delimited by a dash (`-`)
 
@@ -141,10 +143,10 @@ $ make HOST=linux-arm-v7
 During the build, the following layers will be applied to this project:
 
 * `linux`
-* `linux-arm` (applied on top of `linux` layer)
-* `linux-arm-v7` (applied on top of `linux-arm-v7` layer)
+* `linux/arm` (applied on top of `linux` layer)
+* `linux/arm/v7` (applied on top of `linux/arm` layer)
 
-> Note that `linux-x64` layer will be skipped when building the for this host, since it is not a compatible layer.
+> Note that `linux/x64` layer will be skipped when building the for this host, since it is not a compatible layer.
 
 Similarly, when building to `linux-x64` host, set the [`HOST`](#HOST) variable during the build:
 
@@ -154,9 +156,9 @@ $ make HOST=linux-x64
 And the following layers will be applied:
 
 * `linux`
-* `linux-x64` (applied on top of `linux` layer)
+* `linux/x64` (applied on top of `linux` layer)
 
-> Note that `linux-arm` and `linux-arm-v7` layers will be skipped when building the for this host, since they are not compatible layers.
+> Note that `linux/arm` and `linux/arm/v7` layers will be skipped when building the for this host, since they are not compatible layers.
 
 > **Output directory**
 >
@@ -171,25 +173,25 @@ And the following layers will be applied:
 
 ### Layer directories and files
 
-For each supported layer, there is expected to be a subdirectory inside [hosts directory](#default-directories) with its name corresponding to the layer. This location can contain any files/subdirectories, but the following ones have special meaning for the build system:
+For each supported layer, there is expected to be a subdirectory inside [hosts directory](#default-directories) with a path corresponding to the layer. This location can contain any files/subdirectories, but the following ones have special meaning for the build system:
 
 <a name="layer-src-dir"></a>
-* **`$(PROJ_ROOT)/hosts/<layer-name>/src/`**
+* **`$(PROJ_ROOT)/hosts/<layer/name>/src/`**
 
   If present, this directory is expected to contain layer-specific source files, which will be compiled when layer is compatible with selected [`HOST`](#HOST).
 
   > This directory will also be added to compiler's [include search path](#INCLUDE_DIRS).
 
 <a name="layer-host-mk"></a>
-* **`$(PROJ_ROOT)/hosts/<layer-name>/host.mk`**
+* **`$(PROJ_ROOT)/hosts/<layer/name>/host.mk`**
 
   If present, this makefile will be autoamtically included by the build system when layer is compatible with selected [`HOST`](#HOST). This is useful to add custom build flags and/or libraries for chosen layer.
 
-  For example, while building a project (which has custom makefiles for the layers `linux`, `linux-arm` and `linux-arm-v7`) for the host `linux-arm-v7`, the following sequence of includes will be performed automatically by the build system:
+  For example, while building a project (which has custom makefiles for the layers `linux`, `linux/arm` and `linux/arm/v7`) for the host `linux-arm-v7`, the following sequence of includes will be performed automatically by the build system:
 
-  1. `include $(PROJ_ROOT)/hosts/linux-arm-v7/host.mk`
-  2. `include $(PROJ_ROOT)/hosts/linux-arm/host.mk`
-  3. `include $(PROJ_ROOT)/hosts/linux/host.mk`
+  1. `include $(PROJ_ROOT)/hosts/linux/host.mk`
+  2. `include $(PROJ_ROOT)/hosts/linux/arm/host.mk`
+  3. `include $(PROJ_ROOT)/hosts/linux/arm/v7/host.mk`
 
 ### CROSS_COMPILE variable
 
@@ -810,15 +812,6 @@ The following variables shall be changed as a feature of last resort, since they
   * **Restrictions:**
     * Value shall not contain whitespaces
     * Since this directory will be created inside [`$(O)`/build](#output-directories) directory, passing relative paths resulting in a directory other than [`$(O)`/build](#output-directories) is not allowed (an error will be raised by the build system)
-
-<a name="EXTRA_HOSTS_DIRS"></a>
-* **`EXTRA_HOSTS_DIRS`**
-  * **Description:** Extra hosts directories. This is usefull to add platforms layers from command-line.
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** yes
-  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-  * **Restrictions:** Since value is a list of paths, paths shall not contain whitespaces.
 
 <a name="HOSTS_DIRS"></a>
 * **`HOSTS_DIRS`**
