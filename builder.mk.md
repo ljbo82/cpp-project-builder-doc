@@ -125,14 +125,24 @@ The build system was created with the concept of platform layers in mind, which 
 
 A layer is a directory containing makefile definitions and/or specific source files.
 
-In order to clarify the concepts, lets assume an example project which will be supporting the following hosts: `linux-x64`, and `linux-arm-v7`. For this example project, the following layers can be added (note that layer arrangement is up to the developer):
+When a [HOST](#HOST) is specified, it will be factored to find supported layers. The value will be splitted by using the dash (`-`) character.
+
+For example, if a [HOST](#HOST) `linux-arm-v6` is given, the following layers can be applicable if the corresponding directories are found in [layer directories](#layer-directories-and-files) (the layers are seached in following order):
 
 * `linux`
-* `linux/x64` (applied on top of `linux` layer)
-* `linux/arm` (applied on top of `linux` layer)
-* `linux/arm/v7` (applied on top of `linux/arm` layer)
+* `linux/arm`
+* `linux/arm/v6`
+* `linux-arm-v6` (NOTE this is a the last applicable layer if present. Usage of this kind of layer is recommended only factorizing the layer does not make sense for your project)
 
-> NOTE: layer components must be delimited by a dash (`-`)
+In order to clarify the concepts, lets assume an example project which will be supporting the following hosts: `linux-x64`, and `linux-arm-v7`.
+
+For this example project, the following layers are present (note that layer arrangement is up to the developer):
+
+* `linux`
+* `linux/x64`
+* `linux/arm`
+* `linux/arm/v7`
+
 
 If you are compiling this example project to `linux-arm-v7` host, select the compilation host through [`HOST`](#HOST) variable. The recommended way is to set the variable through a command line paramenter (although is perfectly legal to hardcode a value into a `$(PROJ_ROOT)/Makefile`):
 
@@ -142,9 +152,11 @@ $ make HOST=linux-arm-v7
 
 During the build, the following layers will be applied to this project:
 
-* `linux`
-* `linux/arm` (applied on top of `linux` layer)
-* `linux/arm/v7` (applied on top of `linux/arm` layer)
+| Layer          | Comments                                                                           |
+|----------------|------------------------------------------------------------------------------------|
+| `linux`        | _Linux generic definitions_                                                        |
+| `linux/arm`    | _Adds specific definitions and/or override definitions of the `linux` layer_       |
+| `linux/arm/v7` | _Adds specific definitions and/or override definitions of the `linux/arm` layer_   |
 
 > Note that `linux/x64` layer will be skipped when building the for this host, since it is not a compatible layer.
 
@@ -155,8 +167,11 @@ $ make HOST=linux-x64
 ```
 And the following layers will be applied:
 
-* `linux`
-* `linux/x64` (applied on top of `linux` layer)
+
+| Layer          | Comments                                                                      |
+|----------------|-------------------------------------------------------------------------------|
+| `linux`        | _Linux generic definitions_                                                   |
+| `linux/x64`    | _Adds specific definitions and/or override definitions of the `linux` layer_  |
 
 > Note that `linux/arm` and `linux/arm/v7` layers will be skipped when building the for this host, since they are not compatible layers.
 
