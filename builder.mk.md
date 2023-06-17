@@ -852,6 +852,17 @@ The following variables shall be changed as a feature of last resort, since they
   * **Allowed origins:** makefile
   * **Restrictions:** Since value is a list of paths, paths shall not contain whitespaces.
 
+  <a name="LIBS_SUBDIR"></a>
+* **`LIBS_SUBDIR`**
+  * **Description:** Sets the path of a subdirectory inside [`$(O)`](#output-directories) where libraries declared in [$(LIBS)](#LIBS) shall be built.
+  * **Mandatory:** no
+  * **Default value:** `libs`
+  * **Ready for layers:** yes
+  * **Allowed origins:** _Any_
+  * **Restrictions:**
+    * Value shall not contain whitespaces
+    * Since this directory will be created inside [`$(O)`](#output-directories) directory, passing relative paths resulting in a directory other than [`$(O)`](#output-directories) is not allowed (an error will be raised by the build system)
+
 <a name="OPTIMIZE_RELEASE"></a>
 * **`OPTIMIZE_RELEASE`**
   * **Description:**  Defines if release artifacts (when [`DEBUG`](#DEBUG) is `0`) shall be optimized (using compiler optimizations). Optimization level is defined through [`RELEASE_OPTIMIZATION_LEVEL`](#RELEASE_OPTIMIZATION_LEVEL) variable).
