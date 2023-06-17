@@ -1,4 +1,4 @@
-# native-host.mk
+# host.mk
 
 This file inspects current execution environment and identifies the native host. Identified info is exposed through read-only variables.
 
