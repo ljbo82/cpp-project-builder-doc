@@ -533,6 +533,21 @@ The following variables must be defined exclusively inside a makefile (either `$
     * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
     * A list is composed by values delimited by whitespaces (this is a GNU make restriction). For this reason, paths containing spaces are not supported.
 
+<a name="LIBS"></a>
+* **`LIBS`**
+  * **Description:** List of libraries the project must link agains. Each e  make syntax definitions which will be parsed after [`platform layers`](#multiplatform-projects) were parsed. This is useful to define targets depending on variables which will be fully defined later.
+
+  * **Description:** Contains a whitespace-separated list of libraries the project shall link against.
+    * Each entry in this variable has the syntax `LIB_NAME[:LIB_PROJECT_DIR]`:
+      * `LIB_NAME`: defines the library name used by linker
+      * `LIB_PROJECT_DIR`: When defined, the library will be compiled along with the project. This component contains the path to the directory where the library project is located (is assumed that library project is using cpp-project-builder to manage its building process).
+  * **Mandatory:** no
+  * **Default value:** _(undefined)_
+  * **Ready for layers:** no
+  * **Allowed origins:** makefile
+  * **Restrictions:**
+    * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
+
 <a name="LAZY"></a>
 * **`LAZY`**
   * **Description:** Contains make syntax definitions which will be parsed after [`platform layers`](#multiplatform-projects) were parsed. This is useful to define targets depending on variables which will be fully defined later.
