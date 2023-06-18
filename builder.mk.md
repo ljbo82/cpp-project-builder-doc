@@ -856,7 +856,7 @@ The following variables shall be changed as a feature of last resort, since they
 * **`LIBS_SUBDIR`**
   * **Description:** Sets the path of a subdirectory inside [`$(O)`](#output-directories) where libraries declared in [$(LIBS)](#LIBS) shall be built.
   * **Mandatory:** no
-  * **Default value:** `libs`
+  * **Default value:** if [`$(PROJ_TYPE)`](#PROJ_TYPE) is `app`, default value is `libs`. Otherwise, default value is an empty string.
   * **Ready for layers:** yes
   * **Allowed origins:** _Any_
   * **Restrictions:**
