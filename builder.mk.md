@@ -89,7 +89,7 @@ make O=/output/directory
 >
 > The output base directory shall be ignored by your source code version control system if it is located inside your source tree.
 
-Inside output base directory ([`$(O)`](#O)) you will find the following directories (some of them exists only for certain [types of projects](#PROJ_TYPE)):
+Inside output base directory ([`$(O)`](#O)) you will find the following directories (some of them exists only for certain [project types](#PROJ_TYPE)):
 
 * **`$(O)/build/`**
 
@@ -637,7 +637,11 @@ The following variables must be defined exclusively inside a makefile (either `$
   * **Default value:** _(undefined)_
   * **Ready for layers:** yes
   * **Allowed origins:** makefile
-  * **Restrictions:** Accepted values are **`app`** (for an application executable) or **`lib`** (for a library. See  [`LIB_TYPE`](#LIB_TYPE)).
+  * **Restrictions:** Accepted values are:
+    * **`app`** (for an application executable);
+    * **`lib`** (for a library. See  [`LIB_TYPE`](#LIB_TYPE));
+    * **`custom` (used for custom build commands);
+    * **`dep` (used to declare transient dependencies).
 
 <a name="PROJ_VERSION"></a>
 * **`PROJ_VERSION`**
