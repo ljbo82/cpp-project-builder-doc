@@ -548,16 +548,15 @@ The following variables must be defined exclusively inside a makefile (either `$
   * **Restrictions:**
     * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
 
-<a name="LAZY"></a>
-* **`LAZY`**
-  * **Description:** Contains make syntax definitions which will be parsed after [`platform layers`](#multiplatform-projects) were parsed. This is useful to define targets depending on variables which will be fully defined later.
+<a name="LAZY_INCLUDES"></a>
+* **`LAZY_INCLUDES`**
+  * **Description:** Contains a list of make files that should be included by the build system after [`platform layers`](#multiplatform-projects) were parsed. This is useful to define targets depending on variables which are defined only after all platform layers were processed.
   * **Mandatory:** no
   * **Default value:** _(undefined)_
   * **Ready for layers:** no
   * **Allowed origins:** makefile
   * **Restrictions:**
-    * Since this variable will hold makefile sections and can contains multiple lines, set/append value to this variable using [`define`](#https://www.gnu.org/software/make/manual/make.html#Multi_002dLine).
-    * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
+    * Since variable is intended to hold a list of values (whitespace-delimited string), it is recommend to use the `+=` operator while adding values to the variable.
 
 <a name="POST_BUILD_DEPS"></a>
 * **`POST_BUILD_DEPS`**
@@ -640,8 +639,7 @@ The following variables must be defined exclusively inside a makefile (either `$
   * **Restrictions:** Accepted values are:
     * **`app`** (for an application executable);
     * **`lib`** (for a library. See  [`LIB_TYPE`](#LIB_TYPE));
-    * **`custom` (used for custom build commands);
-    * **`dep` (used to declare transient dependencies).
+    * **`custom` (used for custom build logic);
 
 <a name="PROJ_VERSION"></a>
 * **`PROJ_VERSION`**
