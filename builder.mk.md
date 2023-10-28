@@ -548,8 +548,8 @@ The following variables must be defined exclusively inside a makefile (either `$
   * **Restrictions:**
     * In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable (using `+=` makefile operator) instead of setting a value directly.
 
-<a name="MAKE_INCLUDES"></a>
-* **`MAKE_INCLUDES`**
+<a name="MK_EXTRA_INCLUDES"></a>
+* **`MK_EXTRA_INCLUDES`**
   * **Description:** Contains a list of make files that should be included by the build system after [`platform layers`](#multiplatform-projects) were parsed. This is useful to define targets depending on variables which are defined only after all platform layers were processed.
   * **Mandatory:** no
   * **Default value:** _(undefined)_
