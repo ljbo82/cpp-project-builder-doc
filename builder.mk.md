@@ -756,38 +756,6 @@ The following variables allows compiler configuration:
   * **Allowed origins:** _enviroment_, _file_
   * **Restrictions:** In order to achive flexibility on multiplatform projects, it is strongly recommeded to append values to this variable instead of setting a value directly.
 
-  <a name="EXTRA_ASFLAGS"></a>
-* **`EXTRA_ASFLAGS`**
-  * **Description:** Extra assembler flags.
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-
-<a name="EXTRA_CFLAGS"></a>
-* **`EXTRA_CFLAGS`**
-  * **Description:** Extra C compiler flags.
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-
-<a name="EXTRA_CXXFLAGS"></a>
-* **`EXTRA_CXXFLAGS`**
-  * **Description:** Extra C++ compiler flags.
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-
-  <a name="EXTRA_LDFLAGS"></a>
-* **`EXTRA_LDFLAGS`**
-  * **Description:** Extra linker flags.
-  * **Mandatory:** no
-  * **Default value:** _(undefined)_
-  * **Ready for layers:** no
-  * **Allowed origins:** _Any, although it is strongly recommended to define this variable through command-line parameters._
-
 <a name="LD"></a>
 * **`LD`**
   * **Description:** Contains the name of linker executable.
