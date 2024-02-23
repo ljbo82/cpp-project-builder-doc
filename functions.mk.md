@@ -8,7 +8,7 @@ Following are listed exposed functions:
 
 ### Text functions
 
-* **`$(call FN_TOKEN,baseString,delimiter,cutIndex)`**
+* **`$(call FN_SPLIT,baseString,delimiter,cutIndex)`**
 
   Returns a token on delimited string.
 
